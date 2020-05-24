@@ -15,9 +15,9 @@ class AlienInvasion:
         # create a display window where we will draw all the game's graphical elements
         # object assined to self.screen is called a surface
         # ___________ For full screen ____________________ uncomment to use
-        #self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-        #self.settings.screen_width = self.screen.get_rect().width
-        #self.settings.screen_height = self.screen.get_rect().height
+        # self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        # self.settings.screen_width = self.screen.get_rect().width
+        # self.settings.screen_height = self.screen.get_rect().height
         # __________________________________________________________
 
         # _______________for limited screen window__________________ uncomment to use
@@ -38,17 +38,10 @@ class AlienInvasion:
             self._check_events()
             # update the ship drawing
             self.ship.update()
-            # update the position of the bullets
-            # calls update for each bullet since they are in a group.
-            self.bullets.update()
+            # update bullets
+            self._update_bullets()
             # redraw the screen during each pass through the loop.
             self._update_screen()
-
-            # get rid of bullets they have disappeared.
-            for bullet in self.bullets.copy():
-                if bullet.rect.bottom <= 0:
-                    self.bullets.remove(bullet)
-            # print(len(self.bullets)) #checks to make sure the bullets are being deleted
 
     def _check_events(self):
         """ respond to keypresses and mouse events"""
@@ -101,6 +94,19 @@ class AlienInvasion:
             bullet.draw_bullet()
         # make the most recently drawn screen visible.
         pygame.display.flip()  # draws empty screen each pass through the loop
+
+    def _update_bullets(self):
+        """update the position of bullets and get rid of old bullets."""
+        # update bullet positions
+        # update the position of the bullets
+        # calls update for each bullet since they are in a group.
+        self.bullets.update()
+        # get rid of bullets they have disappeared.
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
+        # checks to make sure the bullets are being deleted
+        print(len(self.bullets))
 
 
 if __name__ == '__main__':
