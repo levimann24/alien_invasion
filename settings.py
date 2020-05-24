@@ -4,6 +4,7 @@ class Settings:
     def __init__(self):
         """Initialize the game's Settings."""
         # screen settings
+        self.full_screen = True
         self.screen_width = 1200
         self.screen_height = 800
         self.bg_color = (0, 0, 0)  # bacground color
@@ -17,3 +18,8 @@ class Settings:
         self.bullet_height = 15
         self.bullet_color = (230, 230, 230)
         self.bullets_allowed = 3  # limiting the number of bullets
+        # Star settings
+        self.star_height = 1
+        self.star_width = 1
+        self.star_color = (230, 230, 230)
+        self.stars_allowed = 500

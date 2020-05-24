@@ -1,9 +1,10 @@
 import sys
 import pygame
 import settings
-import ship
+from ship import Ship
 import bullet
 from alien import Alien
+from star import Star
 
 
 class AlienInvasion:
@@ -26,13 +27,16 @@ class AlienInvasion:
             (self.settings.screen_width, self.settings.screen_height))
         # __________________________________________________________
         pygame.display.set_caption("Alien Invasion")
+        # storing stars in a group
+        self.stars = pygame.sprite.Group()
+        self._create_stars()
         # storing bullets in a group
         self.bullets = pygame.sprite.Group()
         # storing aliens in a group
         self.aliens = pygame.sprite.Group()
-        self._create_fleet()
         # initializing ship
-        self.ship = ship.Ship(self)
+        self.ship = Ship(self)
+        self._create_fleet()
 
     def run_game(self):
         """Start the main loop for the game."""
@@ -89,6 +93,8 @@ class AlienInvasion:
         """update images on the screen, and flip to the new screen"""
         # redraw the screen during each pass through the loop.
         self.screen.fill(self.settings.bg_color)
+        for star in self.stars.sprites():
+            star.draw_star()
         self.ship.blitme()
         # loop through bullet group and update them for new location
         for bullet in self.bullets.sprites():
@@ -114,20 +120,34 @@ class AlienInvasion:
         """create the fleet of aliens."""
         # make an alien.
         alien = Alien(self)
-        alien_width = alien.rect.width
+        alien_width, alien_height = alien.rect.size
+        # determine number of columns
         available_space_x = self.settings.screen_width - (2 * alien_width)
         number_aliens_x = available_space_x // (2 * alien_width)
-        # create the first row of aliens.
-        for alien_number in range(number_aliens_x):
-            self._create_alien(alien_number)
-            # create an alien and place it in the row.
+        # determine number of rows
+        ship_height = self.ship.rect.height
+        available_space_y = (self.settings.screen_height -
+                             (3*alien_height)-ship_height)
+        number_rows = available_space_y // (2*alien_height)
 
-    def _create_alien(self, alien_number):
+        # create full fleet of aliens
+        for row_number in range(number_rows):
+            for alien_number in range(number_aliens_x):
+                self._create_alien(alien_number, row_number)
+                # create an alien and place it in the row.
+
+    def _create_alien(self, alien_number, row_number):
         alien = Alien(self)
-        alien_width = alien.rect.width
+        alien_width, alien_height = alien.rect.size
         alien.x = alien_width + 2 * alien_width * alien_number
         alien.rect.x = alien.x
+        alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number
         self.aliens.add(alien)
+
+    def _create_stars(self):
+        while len(self.stars) < self.settings.stars_allowed:
+            star = Star(self)
+            self.stars.add(star)
 
 
 if __name__ == '__main__':

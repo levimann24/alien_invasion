@@ -9,19 +9,15 @@ class Ship:
         self.screen = ai_game.screen
         self.settings = ai_game.settings
         self.screen_rect = ai_game.screen.get_rect()
-
         # load the ship image and get its rect.
         self.image = pygame.image.load('images/rocket.bmp')
         self.rect = self.image.get_rect()
-
         # start each new ship at the bottom center of the screen.
         self.rect.midbottom = self.screen_rect.midbottom
-
         # store a decimal value for the ships horizontal position.
         self.x = float(self.rect.x)
         # rocket package
         self.y = float(self.rect.y)
-
         # movement flag
         self.moving_right = False
         self.moving_left = False
