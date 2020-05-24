@@ -3,6 +3,7 @@ import pygame
 import settings
 import ship
 import bullet
+from alien import Alien
 
 
 class AlienInvasion:
@@ -27,6 +28,9 @@ class AlienInvasion:
         pygame.display.set_caption("Alien Invasion")
         # storing bullets in a group
         self.bullets = pygame.sprite.Group()
+        # storing aliens in a group
+        self.aliens = pygame.sprite.Group()
+        self._create_fleet()
         # initializing ship
         self.ship = ship.Ship(self)
 
@@ -36,12 +40,9 @@ class AlienInvasion:
             # watch for keyboard and mouse events.
             # event is action that user performs
             self._check_events()
-            # update the ship drawing
-            self.ship.update()
-            # update bullets
-            self._update_bullets()
-            # redraw the screen during each pass through the loop.
-            self._update_screen()
+            self.ship.update()  # update the ship drawing
+            self._update_bullets()  # update bullets
+            self._update_screen()  # redraw the screen
 
     def _check_events(self):
         """ respond to keypresses and mouse events"""
@@ -92,6 +93,7 @@ class AlienInvasion:
         # loop through bullet group and update them for new location
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
+        self.aliens.draw(self.screen)
         # make the most recently drawn screen visible.
         pygame.display.flip()  # draws empty screen each pass through the loop
 
@@ -106,7 +108,26 @@ class AlienInvasion:
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
         # checks to make sure the bullets are being deleted
-        print(len(self.bullets))
+        # print(len(self.bullets))
+
+    def _create_fleet(self):
+        """create the fleet of aliens."""
+        # make an alien.
+        alien = Alien(self)
+        alien_width = alien.rect.width
+        available_space_x = self.settings.screen_width - (2 * alien_width)
+        number_aliens_x = available_space_x // (2 * alien_width)
+        # create the first row of aliens.
+        for alien_number in range(number_aliens_x):
+            self._create_alien(alien_number)
+            # create an alien and place it in the row.
+
+    def _create_alien(self, alien_number):
+        alien = Alien(self)
+        alien_width = alien.rect.width
+        alien.x = alien_width + 2 * alien_width * alien_number
+        alien.rect.x = alien.x
+        self.aliens.add(alien)
 
 
 if __name__ == '__main__':
