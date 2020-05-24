@@ -14,7 +14,7 @@ class Asteroid(pygame.sprite.Sprite):
         self.screen_width = self.settings.screen_width
         self.screen_height = self.settings.screen_height
         self.x = randint(0, self.screen_width)
-        self.y = randint(0, self.screen_height/4)
+        self.y = randint(0, self.screen_height/2)
 
         # initialize asteroid at random locations on top quarter of screen
         self.rect = pygame.Rect(

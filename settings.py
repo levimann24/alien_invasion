@@ -34,8 +34,8 @@ class Settings:
         self.fleet_direction = 1
 
         # asteroid settings
-        self.asteroid_width = 5
-        self.asteroid_height = 5
-        self.asteroid_color = (230, 0, 0)
+        self.asteroid_width = 3
+        self.asteroid_height = 3
+        self.asteroid_color = (230, 230, 230)
         self.asteroids_allowed = 10
         self.asteroid_speed = 1

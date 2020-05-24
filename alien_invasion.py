@@ -10,6 +10,7 @@ import bullet
 from alien import Alien
 from star import Star
 from asteroids import Asteroid
+from button import Button
 
 
 class AlienInvasion:
@@ -48,6 +49,8 @@ class AlienInvasion:
         # initializing ship
         self.ship = Ship(self)
         self._create_fleet()
+        # make the Play button.
+        self.play_button = Button(self, "PLAY")
 
     def run_game(self):
         """Start the main loop for the game."""
@@ -68,10 +71,29 @@ class AlienInvasion:
         for event in pygame.event.get():  # accesses the events pygame detects
             if event.type == pygame.QUIT:
                 sys.exit()  # Exits the game
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                self._check_play_button(mouse_pos)
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
+
+    def _check_play_button(self, mouse_pos):
+        """Start a new game when the player clicks Play"""
+        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+        if button_clicked and not self.stats.game_active:
+            # reset the game statistics.
+            self.stats.reset_stats()
+            self.stats.game_active = True
+            # get rid of any remaining aliens and bullets
+            self.aliens.empty()
+            self.bullets.empty()
+            # create new fleet and center ship.
+            self._create_fleet()
+            self.ship.center_ship()
+            # hide mouse cursor.
+            pygame.mouse.set_visible(False)
 
     def _check_keydown_events(self, event):
         if event.key == pygame.K_RIGHT:
@@ -118,6 +140,10 @@ class AlienInvasion:
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
+
+        # Draw the play button if the game is inactive.
+        if not self.stats.game_active:
+            self.play_button.draw_button()
         # make the most recently drawn screen visible.
         pygame.display.flip()  # draws empty screen each pass through the loop
 
@@ -241,6 +267,7 @@ class AlienInvasion:
             sleep(0.5)
         else:
             self.stats.game_active = False
+            pygame.mouse.set_visible(True)
 
 
 if __name__ == '__main__':
