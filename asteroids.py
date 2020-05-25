@@ -13,8 +13,8 @@ class Asteroid(pygame.sprite.Sprite):
         self.color = ai_game.settings.asteroid_color
         self.screen_width = self.settings.screen_width
         self.screen_height = self.settings.screen_height
-        self.x = randint(0, self.screen_width)
-        self.y = randint(0, self.screen_height/2)
+        self.x = randint(-20, self.screen_width)
+        self.y = randint(20, self.screen_height/2)
 
         # initialize asteroid at random locations on top quarter of screen
         self.rect = pygame.Rect(

@@ -35,9 +35,9 @@ class Settings:
 
         # asteroid settings
         self.asteroid_width = 3
-        self.asteroid_height = 3
-        self.asteroid_color = (230, 230, 230)
-        self.asteroids_allowed = 10
+        self.asteroid_height = 15
+        self.asteroid_color = (230, 0, 0)
+        self.asteroids_allowed = 0
         self.asteroid_speed = 1
 
         # how quickly the game speeds up
@@ -51,7 +51,7 @@ class Settings:
         """Initializes settings taht change througout the game"""
         self.ship_speed = 3
         self.bullet_speed = 4
-        self.alien_speed = 3
+        self.alien_speed = 2
         # Fleet direction of 1 represents right: -1 represents left
         self.fleet_direction = 1
         # scoring

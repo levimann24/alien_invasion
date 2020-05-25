@@ -24,14 +24,14 @@ class AlienInvasion:
         # create a display window where we will draw all the game's graphical elements
         # object assined to self.screen is called a surface
         # ___________ For full screen ____________________ uncomment to use
-        # self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-        # self.settings.screen_width = self.screen.get_rect().width
-        # self.settings.screen_height = self.screen.get_rect().height
+        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        self.settings.screen_width = self.screen.get_rect().width
+        self.settings.screen_height = self.screen.get_rect().height
         # __________________________________________________________
 
         # _______________for limited screen window__________________ uncomment to use
-        self.screen = pygame.display.set_mode(
-            (self.settings.screen_width, self.settings.screen_height))
+        # self.screen = pygame.display.set_mode(
+        #     (self.settings.screen_width, self.settings.screen_height))
         # __________________________________________________________
 
         pygame.display.set_caption("Alien Invasion")
@@ -95,6 +95,7 @@ class AlienInvasion:
         self.stats.game_active = True
         self.sb.prep_score()
         self.sb.prep_level()
+        self.sb.prep_ships()
         # get rid of any remaining aliens and bullets
         self.aliens.empty()
         self.bullets.empty()
@@ -179,7 +180,11 @@ class AlienInvasion:
         """respond to bullet-alien collisions."""
         # remove any bullets and aliens that have collided
         collisions = pygame.sprite.groupcollide(
-            self.bullets, self.aliens, True, True)
+            self.bullets, self.aliens, False, True)
+        # for hit in collisions:
+        # print("Hit!!")
+        # print(hit.rect.center)
+
         if not self.aliens:
             # Destroy existing bullets and creat new fleet
             self.bullets.empty()
@@ -279,6 +284,7 @@ class AlienInvasion:
         if self.stats.ships_left > 0:
             # decrement the ships left.
             self.stats.ships_left -= 1
+            self.sb.prep_ships()
             # get rid of any remaining aliens and bullets.
             self.aliens.empty()
             self.bullets.empty()
